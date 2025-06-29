@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import signupBg from '../assets/2149434397.jpg';
 import user1 from '../assets/man1.png';
 import logo from '../assets/logo.png';
@@ -7,6 +8,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
 
 function SignupPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [errors, setErrors] = useState({});
@@ -189,18 +191,19 @@ function SignupPage() {
             onClick={async () => {
                 setVerifying(true);
                 setVerificationError('');
-                
+
                 const entered = otp.join('');
                 const correct = '1234';
 
                 await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate delay
 
                 if (entered === correct) {
-                // Show "Successful" then redirect
                 const btn = document.querySelector('#verify-btn');
                 if (btn) btn.textContent = 'Verification Successful';
+
                 await new Promise((resolve) => setTimeout(resolve, 1000));
-                window.location.href = '/dashboard';
+
+                navigate('/dashboard'); // Navigate with react-router
                 } else {
                 setVerifying(false);
                 setVerificationError('Invalid OTP. Please try again.');
@@ -210,6 +213,7 @@ function SignupPage() {
             >
             {verifying ? 'Verifying...' : 'Verify'}
             </button>
+
 
           </>
         )}
